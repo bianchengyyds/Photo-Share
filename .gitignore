@@ -1,0 +1,33 @@
+# ---- 真实凭据：绝不入库 ----
+# 本地覆盖配置（DB 密码 / 七牛 AK-SK / JWT 密钥）
+backend/application-secrets.yml
+.env
+.env.local
+
+# 内部过程文档（含真凭据的 md 也在里面）整体不入库；
+# 表结构见 database/schema.sql，设计说明的脱敏版见 docs/数据库设计.md
+五部流程/
+
+# ---- 构建产物与依赖 ----
+backend/target/
+frontend/dist/
+frontend/node_modules/
+*.class
+
+# ---- 运行时产生的文件 ----
+backend/uploads/
+*.log
+
+# ---- IDE 与工具目录 ----
+.trae/
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini

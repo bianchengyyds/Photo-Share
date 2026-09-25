@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    # 本地真实凭据写在 backend/application-secrets.yml（已 gitignore，不入库）。
+    # optional 前缀保证文件缺失时也能启动，便于他人 clone 后按 README 自行配置。
+    import: "optional:file:./application-secrets.yml,optional:file:../application-secrets.yml"
+  datasource:
+    url: "${DB_URL:jdbc:mysql://localhost:3306/photo_share?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}"
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 200MB
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 文件存储配置
+# local（默认）：写入本机 uploads 目录，无需任何云账号
+# qiniu：需要在 application-secrets.yml 或环境变量里填 AK/SK/bucket/domain
+storage:
+  type: ${STORAGE_TYPE:local}
+  local:
+    base-path: ./uploads
+  qiniu:
+    access-key: ${QINIU_ACCESS_KEY:}
+    secret-key: ${QINIU_SECRET_KEY:}
+    bucket: ${QINIU_BUCKET:}
+    domain: ${QINIU_DOMAIN:}
+
+# SpringDoc 配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# JWT 配置
+# HS256 要求密钥不短于 32 字节；下面的默认值仅供本地开发，部署必须用 JWT_SECRET 覆盖
+jwt:
+  secret: ${JWT_SECRET:photoshare-local-dev-secret-do-not-use-in-production-0123456789}
+  expiration: ${JWT_EXPIRATION:86400000}
